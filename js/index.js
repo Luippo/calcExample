@@ -30,7 +30,7 @@ var methods = {
         switch(action){
             case "numero":
                 properties.operatorCant = 0;
-                if(properties.operations.innerHTML == 0){
+                if(properties.operations.innerHTML == "0"){
                     properties.operations.innerHTML = digit;
                 }else{
                     if(properties.result){
@@ -43,8 +43,8 @@ var methods = {
                 break;
             case "signo":
                 properties.operatorCant += 1;
-                if(properties.operatorCant == 1){
-                    if(properties.operations.innerHTML == 0){
+                if(properties.operatorCant == "1"){
+                    if(properties.operations.innerHTML == "0"){
                         properties.operations.innerHTML = 0;
                     }else{
                         properties.operations.innerHTML += digit;
@@ -55,10 +55,15 @@ var methods = {
                 break;
             case "igual": 
                 properties.operations.innerHTML = eval(properties.operations.innerHTML);
+
+                var expresion = /./g;
+                if(expresion.test(properties.operations.innerHTML)){
+                    properties.decimalNumbers = true;
+                }
                 properties.result = true;
                 break;
             case "decimal":
-                if(!properties.decimalNumbers){
+                if(!properties.decimalNumbers && properties.operatorCant != 1){
                     properties.operations.innerHTML += digit;
                     properties.decimalNumbers = true;
                     properties.result = false;
@@ -67,6 +72,7 @@ var methods = {
         }
     },
     eraseCalc: function(){
+        properties.result = false;
         properties.operations.innerHTML = 0;
     },
     keyboard: function(){
@@ -79,76 +85,57 @@ var methods = {
         if(key.keyCode == 48 || key.keyCode == 96){
             properties.action = "numero";
             properties.digit = 0;
-        }
-        if(key.keyCode == 49 || key.keyCode == 97){
+        }else if(key.keyCode == 49 || key.keyCode == 97){
             properties.action = "numero";
             properties.digit = 1;
-        }
-        if(key.keyCode == 50 || key.keyCode == 98){
+        }else if(key.keyCode == 50 || key.keyCode == 98){
             properties.action = "numero";
             properties.digit = 2;
-        }
-        if(key.keyCode == 51 || key.keyCode == 99){
+        }else if(key.keyCode == 51 || key.keyCode == 99){
             properties.action = "numero";
             properties.digit = 3;
-        }
-        if(key.keyCode == 52 || key.keyCode == 100){
+        }else if(key.keyCode == 52 || key.keyCode == 100){
             properties.action = "numero";
             properties.digit = 4;
-        }
-        if(key.keyCode == 53 || key.keyCode == 101){
+        }else if(key.keyCode == 53 || key.keyCode == 101){
             properties.action = "numero";
             properties.digit = 5;
-        }
-        if(key.keyCode == 54 || key.keyCode == 102){
+        }else if(key.keyCode == 54 || key.keyCode == 102){
             properties.action = "numero";
             properties.digit = 6;
-        }
-        if(key.keyCode == 55 || key.keyCode == 103){
+        }else if(key.keyCode == 55 || key.keyCode == 103){
             properties.action = "numero";
             properties.digit = 7;
-        }
-        if(key.keyCode == 56 || key.keyCode == 104){
+        }else if(key.keyCode == 56 || key.keyCode == 104){
             properties.action = "numero";
             properties.digit = 8;
-        }
-        if(key.keyCode == 57 || key.keyCode == 105){
+        }else if(key.keyCode == 57 || key.keyCode == 105){
             properties.action = "numero";
             properties.digit = 9;
-        }
-
-        /**
-         * Simbolos 
-         */
-        if(key.keyCode == 187 || key.keyCode == 107){
+        }else if(key.keyCode == 187 || key.keyCode == 107){
             properties.action = "signo";
             properties.digit = "+";
-        }
-        if(key.keyCode == 189 || key.keyCode == 109){
+        }else if(key.keyCode == 189 || key.keyCode == 109){
             properties.action = "signo";
             properties.digit = "-";
-        }
-        if(key.keyCode == 88 || key.keyCode == 106){
+        }else if(key.keyCode == 88 || key.keyCode == 106){
             properties.action = "signo";
             properties.digit = "*";
-        }
-        if(key.keyCode == 111){
+        }else if(key.keyCode == 111){
             properties.action = "signo";
             properties.digit = "/";
-        }
-        if(key.keyCode == 190 || key.keyCode == 110){
+        }else if(key.keyCode == 190 || key.keyCode == 110){
             properties.action = "decimal";
             properties.digit = ".";
-        }
-        if(key.keyCode == 13){
+        }else if(key.keyCode == 13){
             properties.action = "igual";            
-        }
-        if(key.keyCode == 8){
+        }else if(key.keyCode == 8){
+            properties.action = "";
             methods.eraseCalc();            
+        }else{
+            properties.action = "";
+            properties.digit = "";
         }
-
-
-
         methods.calc(properties.action, properties.digit);
     }
 }
